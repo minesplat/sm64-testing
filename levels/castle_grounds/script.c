@@ -92,6 +92,22 @@ static const LevelScript script_func_local_4[] = {
     RETURN(),
 };
 
+// Custom gameplay layer that turns the castle grounds into a full combat playground
+// using stock game assets/models.
+static const LevelScript script_func_custom_level[] = {
+    OBJECT(/*model*/ MODEL_KING_BOBOMB,     /*pos*/     0,  260,  2200, /*angle*/ 0,   0, 0, /*bhvParam*/ 0, /*bhv*/ bhvKingBobomb),
+    OBJECT(/*model*/ MODEL_GOOMBA,          /*pos*/  -900,  260,  2400, /*angle*/ 0,   0, 0, /*bhvParam*/ 0, /*bhv*/ bhvGoombaTripletSpawner),
+    OBJECT(/*model*/ MODEL_GOOMBA,          /*pos*/   900,  260,  2400, /*angle*/ 0,   0, 0, /*bhvParam*/ 0, /*bhv*/ bhvGoombaTripletSpawner),
+    OBJECT(/*model*/ MODEL_CHUCKYA,         /*pos*/ -1400,  260,  1600, /*angle*/ 0,  90, 0, /*bhvParam*/ 0, /*bhv*/ bhvChuckya),
+    OBJECT(/*model*/ MODEL_CHUCKYA,         /*pos*/  1400,  260,  1600, /*angle*/ 0, 270, 0, /*bhvParam*/ 0, /*bhv*/ bhvChuckya),
+    OBJECT(/*model*/ MODEL_THWOMP,          /*pos*/     0,  260,  3100, /*angle*/ 0,   0, 0, /*bhvParam*/ 0, /*bhv*/ bhvThwomp),
+    OBJECT(/*model*/ MODEL_BREAKABLE_BOX,   /*pos*/ -2200,  260,  2600, /*angle*/ 0,   0, 0, /*bhvParam*/ 0, /*bhv*/ bhvBreakableBox),
+    OBJECT(/*model*/ MODEL_BREAKABLE_BOX,   /*pos*/  2200,  260,  2600, /*angle*/ 0,   0, 0, /*bhvParam*/ 0, /*bhv*/ bhvBreakableBox),
+    OBJECT(/*model*/ MODEL_1UP,             /*pos*/     0,  500,  1400, /*angle*/ 0,   0, 0, /*bhvParam*/ 0, /*bhv*/ bhv1Up),
+    OBJECT(/*model*/ MODEL_EXCLAMATION_BOX, /*pos*/     0,  500,  3200, /*angle*/ 0,   0, 0, /*bhvParam*/ 0, /*bhv*/ bhvExclamationBox),
+    RETURN(),
+};
+
 const LevelScript level_castle_grounds_entry[] = {
     INIT_LEVEL(),
     LOAD_MIO0        (/*seg*/ 0x07, _castle_grounds_segment_7SegmentRomStart, _castle_grounds_segment_7SegmentRomEnd),
@@ -106,6 +122,8 @@ const LevelScript level_castle_grounds_entry[] = {
     ALLOC_LEVEL_POOL(),
     MARIO(/*model*/ MODEL_MARIO, /*bhvParam*/ BPARAM4(0x01), /*bhv*/ bhvMario),
     JUMP_LINK(script_func_global_1),
+    JUMP_LINK(script_func_global_2),
+    JUMP_LINK(script_func_global_4),
     JUMP_LINK(script_func_global_11),
     JUMP_LINK(script_func_global_16),
     LOAD_MODEL_FROM_GEO(MODEL_LEVEL_GEOMETRY_03,           castle_grounds_geo_0006F4),
@@ -123,6 +141,7 @@ const LevelScript level_castle_grounds_entry[] = {
         JUMP_LINK(script_func_local_2),
         JUMP_LINK(script_func_local_3),
         JUMP_LINK(script_func_local_4),
+        JUMP_LINK(script_func_custom_level),
         TERRAIN(/*terrainData*/ castle_grounds_seg7_collision_level),
         MACRO_OBJECTS(/*objList*/ castle_grounds_seg7_macro_objs),
         SET_BACKGROUND_MUSIC(/*settingsPreset*/ 0x0000, /*seq*/ SEQ_SOUND_PLAYER),
@@ -130,7 +149,7 @@ const LevelScript level_castle_grounds_entry[] = {
     END_AREA(),
 
     FREE_LEVEL_POOL(),
-    MARIO_POS(/*area*/ 1, /*yaw*/ 180, /*pos*/ -1328, 260, 4664),
+    MARIO_POS(/*area*/ 1, /*yaw*/ 180, /*pos*/ 0, 260, 4200),
     CALL(/*arg*/ 0, /*func*/ lvl_init_or_update),
     CALL_LOOP(/*arg*/ 1, /*func*/ lvl_init_or_update),
     CLEAR_LEVEL(),
